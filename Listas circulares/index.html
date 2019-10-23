@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Listas Circulares</title>
+</head>
+<body>
+    <div id="textoPrincipal">
+        <h1>Registro de paradas</h1>
+    </div>
+    <div>
+        <h2>Historial de Inventario</h2>
+        <div id="textString"></div>
+    </div>
+    <div>
+        <h2>Inventario al contrario</h2>
+        <div id="reverseTextString"></div>
+        <button type="button" id="btnTextReverse">Inventario Invertido</button>
+    </div>
+    <br>
+    <div>
+        <h2>Buscar Base</h2>
+        <input id="searchObject" type="text">
+        <br>
+        <br>
+        <button id="btnSerch" type="button">Buscar Base</button>
+        <br>
+        <div id="resultSearch"></div> 
+    </div>
+    <div>
+        <h2>Eliminar Base</h2>
+        <label>Base a eliminar</label>
+        <input id="deleteObject" type="text">
+        <br>
+        <br>
+        <button id="btnDelete" type="button">Eliminar Base</button>
+        <br>  
+    </div>
+    <div>
+        <h2>Inicio de ruta</h2>
+        <label>Inicio base:</label>
+        <input type="text" id="startBase">
+        <label>Hora inicio</label>
+        <input type="time" id="startHour">
+        <label>Hora fin</label>
+        <input type="time" id="finishHour">
+        <button id="start" type="button">Start</button>
+        <div id="showRoute"></div>
+    </div>
+    <h2>Registro de Base Nueva</h2>
+    <form>
+        <label>Nombre Base</label>
+        <input id="name" type="text/number">
+        <br>
+        <label>Minutos a la proxima parada</label>
+        <input id="minutes" type="number">
+        <br>
+        <button id="btnAdd" type="button">Agregar Base</button>
+        <br>
+        <label>Insertar a nueva posición</label>
+        <input id="position" type="number">
+        <br>
+        <button id="btnInsert" type="button">Insertar a posición</button>
+        <br>
+    </form>
+</body>
+<script src="./main.js" type="module"></script>
+</html>
