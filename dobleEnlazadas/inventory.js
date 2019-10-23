@@ -30,7 +30,6 @@ export default class Inventory {
         this._tail = tail;
     }
     /////ANCHOR  Guardar un producto
-    ///FIXME hacer validacion
     saveProduct(objData){
         if(this._start != null){
             let start = this._start;
@@ -53,36 +52,11 @@ export default class Inventory {
                 objData.previous = start;
             }
             this._tail = start.next;
+            
         }else{
             this._start = objData;
         }
     }
-    
-    /*_ordenado(objData) {
-        let start = this._start;
-        let aux;
-        if (start.code > objData.code) {
-            aux = objData;
-            aux.next = start;
-        } else {
-            start = start.next;
-            while (start.code < objData.code) {
-                start = start.next;
-                if(start.next === null)
-                {
-                    break;
-                }
-            }
-            if(start.next != null)
-            {
-                aux = objData;
-                aux.next = start;
-                aux.previous = start.previous;
-                start.next.previous = aux;
-            }
-            
-        }
-    }*/
     ////ANCHOR Proceso para guardar*/
     consultFromInventory(code) {
     let articleSearch = this._checkExist(code);
@@ -91,89 +65,52 @@ export default class Inventory {
         return "No existe el producto";
     }
     return articleSearch.toString();
-    //
     }
     /////////ANCHOR Eliminar del inventario
-    /////FIXME No borra el primero
     quitFromInventory(code) {
-    console.log(code);
-    let start = this._start;
-    //let tail = this._tail;
-    if (start.code === code) {
-        //start= start.next;
-        return start = start.next;
-        //start.previous = null;
-    } else
-        //if (tail.code === code){
-        return tail.previous = tail;
-    //tail = null;
-    /*}else{
-        let articleMiddle = this._nextStart(code);
-        if(articleMiddle == -1){
-            return "Not found";
-        }else{
-            return start.previous.next = start.next;
-        }*/
-    }
-_nextStart(code) {
-    let start = this._start;
-    let objeto = null;
-    while (start.next != null && start.code != code) {
-        if (start.next.code === code) {
-            objeto = start;
-            return objeto;
-        }
-        start = start.next;
-    }
-    return -1;
-    }
-    /*while(start !=null && start.code != code){
-        start = start.next;
-        start.previous = null;
-        }
-    if(start === this._start){
-        this._start = start.next;
-        return  this._start;
-    }else if(start === this._tail){
-        this._tail = this._tail.previous;
-        this._tail = null;
-    }
-    else{
-        if(start.next !=null){
-            start.next = start.previous;
-            console.log(start.next);
-            start.previous = start;
-            console.log(start.previous);
-            
-        }else{
-            start.previous.next = start.next;
-        }
-    }
-    this._counter --;
-    console.log(this._start);   
-    }*/
-    /*quitFromInventory(code){
-    let previous = null;
-    let start = this._start;
-    while(start != null){
-        if(start.code == code){
-            if(start.previous !=null){
-                return this._removeFromHead(code);
-            }   
-            else if(start.next != null){
-                return this._removeFromTail(code);
+        if (this._start.code == code) {
+            this._start = this._start.next;
+            if (this._start != null) {
+                this._start.previous = null;
             }
-            else{
-                previous.next = start.next;
-                start.next.previous = previous;
+            if (this._start == this._end) {
+                this._end = null;
             }
-            return start.code;
+        } else {
+            this._find(code);
         }
-        previous = start;
-        start = start.next;
     }
-    return -1;
-    }*/
+
+    _find(code) {
+        let product = this._nextStart(code, this._start);
+        if (product == null) {
+            return;
+        } else {
+            if (product == this._end) {
+                if (product.previous == this._start) {
+                    console.log("B");
+                    this._start.next = null;
+                    this._end = null;
+                    console.log(this._start);
+                } else {
+                    this._end = product.previous;
+                    this._end.next = null;
+                }
+            } else {
+                product.next.previous = product.previous;
+                product.previous.next = product.next;
+            }
+        }
+    }
+    _nextStart(code, start) {
+        while ((start != null) && (start.code <= code)) {
+            if (start.code == code) {
+                return start;
+            }
+            start = start.next;
+        }
+        return null;
+    }
     /////ANCHOR imprime normal;
     recordInventory() {
         this._inventoryString();
@@ -181,27 +118,6 @@ _nextStart(code) {
     /////ANCHOR imprime contrariamente
     reverseRecordInventory() {
         this._reverseInventoryString();
-    }
-    _removeFromHead(code) {
-
-        if (this._head === this._tail) {
-            this._start = null;
-            this._tail = null;
-        } else {
-            this._start = this._start.next;
-            this._start.previous = null;
-        }
-    }
-    _removeFromTail() {
-        let value = this._tail.code;
-        if (this._tail === this._start) {
-            this._start = null;
-            this._tail = null;
-        } else {
-            this._tail = this._tail.previous;
-            this._tail.next = null;
-        }
-        return value;
     }
     /////NOTE checa la existencia 
     _checkExist(code) {
