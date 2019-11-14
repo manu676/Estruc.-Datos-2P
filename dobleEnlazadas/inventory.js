@@ -62,44 +62,46 @@ export default class Inventory {
     let articleSearch = this._checkExist(code);
     console.log(articleSearch);
     if (articleSearch == -1) {
-        return "No existe el producto";
+        return null;
     }
-    return articleSearch.toString();
+    return articleSearch;
     }
-    /////////ANCHOR Eliminar del inventario
+    /////////ANCHOR Eliminar del inventariso
     quitFromInventory(code) {
-        if (this._start.code == code) {
+        let index = this._checkExist(code);
+        console.log(index);
+        if (index == -1){
+            return console.log("No existe ese producto con ese codigo");
+        }else{
+            if (this._start.code == code) {
             this._start = this._start.next;
-            if (this._start != null) {
-                this._start.previous = null;
-            }
-            if (this._start == this._end) {
-                this._end = null;
-            }
-        } else {
-            this._find(code);
-        }
-    }
-
-    _find(code) {
-        let product = this._nextStart(code, this._start);
-        if (product == null) {
-            return;
-        } else {
-            if (product == this._end) {
-                if (product.previous == this._start) {
-                    console.log("B");
-                    this._start.next = null;
-                    this._end = null;
-                    console.log(this._start);
-                } else {
-                    this._end = product.previous;
-                    this._end.next = null;
+                if (this._start != null) {
+                    this._start.previous = null;
+                }
+                if (this._start == this._tail) {
+                    this._tail = null;
                 }
             } else {
-                product.next.previous = product.previous;
-                product.previous.next = product.next;
+                this._find(code);
             }
+        }
+    }
+    _find(code){
+        let objeto = this._nextStart(code,this._start);
+        if(objeto == null){
+            return;
+        }
+        else if(objeto === this._tail){
+            if(objeto.previous == this._start){
+                this._tail = objeto.previous;
+                this._start.next = null;
+            }else{
+                this._tail = objeto.previous;
+                objeto.previous.next = null;
+            }
+        }else{
+            objeto.previous.next = objeto.next;
+            objeto.next.previous = objeto.previous;
         }
     }
     _nextStart(code, start) {
